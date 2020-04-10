@@ -1,15 +1,17 @@
-# SpringBoot Cheat Sheet
+# SpringBoot WalkThrough
 
 ## Scope
 
 1) Folder Structure 
 2) Authentication
-3) Repository Service Pattern 
-4) JWT Util
-5) Rest Controllers
-6) Spring Boot JPA (ORM) 
-7) DAO & DTO
-8) Model Mapper
+3) Repository
+4) Service
+5) Controller & Rest Controllers 
+6) JWT Util
+7) Repositories 
+8) Spring Boot JPA (ORM) 
+9) DAO & DTO
+10) Model Mapper
 
 
 ## Requirement
