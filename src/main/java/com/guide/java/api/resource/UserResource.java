@@ -2,7 +2,9 @@ package com.guide.java.api.resource;
 
 import com.guide.java.api.model.AuthenticationRequest;
 import com.guide.java.api.model.AuthenticationResponse;
+import com.guide.java.api.model.User;
 import com.guide.java.api.service.MyUserDetailsService;
+import com.guide.java.api.service.UserService;
 import com.guide.java.api.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,9 @@ public class UserResource {
     @Autowired
     private JWTUtil jwtTokenUtil;
 
+    @Autowired
+    private  UserService userService;
+
     @RequestMapping(value = "user/check/token")
     public String token(){
         return "xxx";
@@ -32,18 +37,32 @@ public class UserResource {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
-       try{
+        boolean authenticated = userService.login(authenticationRequest.getEmail(),authenticationRequest.getPassword());
+        if(authenticated){
+            final User user = userService.loadUserByUsername(authenticationRequest.getEmail());
+            final  String jwt = jwtTokenUtil.generateToken(user);
+            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        }else{
+            return  ResponseEntity.ok(new AuthenticationResponse(null));
+        }
+
+
+        /* try{
+           userService.login(authenticationRequest.getEmail(),authenticationRequest.getPassword());
            authenticationManager.authenticate(
                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),authenticationRequest.getPassword())
            );
        } catch (BadCredentialsException e){
            throw new Exception("Incorrect username or password",e);
 
-       }
-       final UserDetails userDetails = myUserDetailsService.loadUserByUsername(authenticationRequest.getEmail());
-       final  String jwt = jwtTokenUtil.generateToken(userDetails);
-       return ResponseEntity.ok(new AuthenticationResponse(jwt));
+       } */
+
    }
+
+
+
+
+
 
 
 }
