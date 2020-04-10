@@ -1,9 +1,12 @@
 package com.guide.java.api.util;
 
 import com.guide.java.api.model.User;
+import com.guide.java.api.service.MyUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -12,7 +15,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JWUtil {
+public class JWTUtil {
     private String SECRET_KEY = "secret";
 
     public String extractUsername(String token) {
@@ -35,9 +38,9 @@ public class JWUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(User userDetails) {
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getEmail());
+        return createToken(claims, userDetails.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
@@ -47,8 +50,8 @@ public class JWUtil {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
-    public Boolean validateToken(String token, User userDetails) {
+    public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getEmail()) && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }
