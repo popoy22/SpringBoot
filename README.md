@@ -5,7 +5,7 @@
 1) Folder Structure 
 2) Authentication
 3) Repository Service Pattern 
-4) JWT 
+4) JWT Util
 5) Rest Controllers
 6) JPA 
 
