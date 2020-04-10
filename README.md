@@ -9,7 +9,7 @@
 5) Rest Controllers
 6) JPA 
 7) DAO & DTO
-8) Object Mapper
+8) Model Mapper
 
 
 ## Requirement
