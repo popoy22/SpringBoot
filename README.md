@@ -6,3 +6,4 @@
 2) Authentication
 3) Repository Service Pattern 
 4) JWT 
+5) Rest Controllers
