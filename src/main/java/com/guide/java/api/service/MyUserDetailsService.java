@@ -9,9 +9,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
-
-// extending MyUserDetail to UserDetailsService
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
@@ -27,6 +26,14 @@ public class MyUserDetailsService implements UserDetailsService {
         return new User(userRepository.findByUsername(token).getUsername(),userRepository.findByUsername(token).getPassword(),new ArrayList<>());
     }
 
+    public boolean login(String email, String password){
+        if(userRepository.existsByEmailAndPassword(email,password)){
+            com.guide.java.api.model.User user = userRepository.findByEmailAndPassword(email,password);
+            user.setUsername(UUID.randomUUID().toString());
+            userRepository.save(user);
+        }
+        return  userRepository.existsByEmailAndPassword(email,password);
+    }
 
 
 

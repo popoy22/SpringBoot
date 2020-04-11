@@ -1,5 +1,6 @@
 package com.guide.java.api.resource;
 
+import com.guide.java.api.dto.UserDTO;
 import com.guide.java.api.model.AuthenticationRequest;
 import com.guide.java.api.model.AuthenticationResponse;
 import com.guide.java.api.model.User;
@@ -8,21 +9,14 @@ import com.guide.java.api.service.UserService;
 import com.guide.java.api.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
 public class UserResource {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
 
     @Autowired
     private JWTUtil jwtTokenUtil;
@@ -30,14 +24,32 @@ public class UserResource {
     @Autowired
     private  UserService userService;
 
-    @RequestMapping(value = "user/check/token")
-    public String token(){
-        return "xxx";
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
+
+
+    @RequestMapping(value = "users")
+    public List<UserDTO> users(){
+        return userService.loadAllUsers();
     }
+
+
+    @RequestMapping(value = "user/seed/{count}")
+    public List<User> seed(@PathVariable int count){
+        return userService.seed(count);
+    }
+
+    @RequestMapping(value = "user/{id}")
+    public UserDTO user(@PathVariable Long id){
+        return userService.loadUser(id);
+    }
+
+
+
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
-        boolean authenticated = userService.login(authenticationRequest.getEmail(),authenticationRequest.getPassword());
+        boolean authenticated = myUserDetailsService.login(authenticationRequest.getEmail(),authenticationRequest.getPassword());
         if(authenticated){
             final User user = userService.loadUserByUsername(authenticationRequest.getEmail());
             final  String jwt = jwtTokenUtil.generateToken(user);
@@ -45,19 +57,7 @@ public class UserResource {
         }else{
             return  ResponseEntity.ok(new AuthenticationResponse(null));
         }
-
-
-        /* try{
-           userService.login(authenticationRequest.getEmail(),authenticationRequest.getPassword());
-           authenticationManager.authenticate(
-                   new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),authenticationRequest.getPassword())
-           );
-       } catch (BadCredentialsException e){
-           throw new Exception("Incorrect username or password",e);
-
-       } */
-
-   }
+    }
 
 
 
