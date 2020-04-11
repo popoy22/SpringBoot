@@ -23,6 +23,11 @@ public class MyUserDetailsService implements UserDetailsService {
       return new User(userRepository.findByEmail(s).getEmail(),userRepository.findByEmail(s).getPassword(),new ArrayList<>());
     }
 
+    public UserDetails loadUserByToken(String token) throws UsernameNotFoundException {
+        return new User(userRepository.findByUsername(token).getUsername(),userRepository.findByUsername(token).getPassword(),new ArrayList<>());
+    }
+
+
 
 
 }
