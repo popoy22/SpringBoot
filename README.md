@@ -9,9 +9,9 @@
 5) Repository
 6) Spring Boot JPA (ORM) 
 7) DAO & DTO
-8) Model Mapper
+8) MapStruct
 9) Authentication
-10) JWT Util
+10) JWT Util 
 
 
 ## Requirement
