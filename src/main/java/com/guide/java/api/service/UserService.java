@@ -35,6 +35,7 @@ public class UserService {
 
     public  List<UserDTO> loadAllUsers(){
         List<User> users =  userRepository.findAll();
+        users = userRepository.findAllActiveUsersNative("popoy@yhmwhy.com");
         List<UserDTO> collect = users.stream().map(
                 user -> userMapper.INSTANCE.userToUserDto(user)
         ).collect(Collectors.toList());
@@ -43,6 +44,7 @@ public class UserService {
 
     public UserDTO loadUser(Long id){
         User user = userRepository.getOne(id);
+
         return  userMapper.INSTANCE.userToUserDto(user);
     }
 
