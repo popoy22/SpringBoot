@@ -1,12 +1,16 @@
 package com.guide.java.api.service;
 
+import com.guide.java.api.dto.AuthenticationResponseDTO;
 import com.guide.java.api.repository.UserRepository;
+import com.guide.java.api.request.AuthenticationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -34,6 +38,8 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         return  userRepository.existsByEmailAndPassword(email,password);
     }
+
+
 
 
 

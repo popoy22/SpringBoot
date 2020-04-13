@@ -1,8 +1,8 @@
 package com.guide.java.api.resource;
 
 import com.guide.java.api.dto.UserDTO;
-import com.guide.java.api.model.AuthenticationRequest;
-import com.guide.java.api.model.AuthenticationResponse;
+import com.guide.java.api.request.AuthenticationRequest;
+import com.guide.java.api.dto.AuthenticationResponseDTO;
 import com.guide.java.api.model.User;
 import com.guide.java.api.service.MyUserDetailsService;
 import com.guide.java.api.service.UserService;
@@ -46,16 +46,15 @@ public class UserResource {
 
 
 
-
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
         boolean authenticated = myUserDetailsService.login(authenticationRequest.getEmail(),authenticationRequest.getPassword());
         if(authenticated){
             final User user = userService.loadUserByUsername(authenticationRequest.getEmail());
             final  String jwt = jwtTokenUtil.generateToken(user);
-            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+            return ResponseEntity.ok(new AuthenticationResponseDTO(jwt));
         }else{
-            return  ResponseEntity.ok(new AuthenticationResponse(null));
+            return  ResponseEntity.ok(new AuthenticationResponseDTO(null));
         }
     }
 

@@ -1,4 +1,4 @@
-package com.guide.java.api.model;
+package com.guide.java.api.request;
 
 public class AuthenticationRequest {
     private  String email;
