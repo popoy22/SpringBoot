@@ -1,4 +1,4 @@
-# SpringBoot WalkThrough
+# SpringBoot Walkthrough
 
 ## Scope
 
